@@ -1,0 +1,2012 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* --body-color: #52a5c3;
+  --body-shawdow-color: #2589ad;
+  --body-shawdow-color-light: #2589ad2b; */
+
+  --body-color: #298abf;
+  --body-shawdow-color: #1976a8;
+  --body-shawdow-color-light: #1976a82b;
+
+  --body-color2: #fff;
+  --belt-color: rgb(186, 62, 85);
+  --black: #555;
+  --mouth-bg-color: rgb(140, 51, 77);
+  --page-bg-color: #eee;
+  --app-height: 100vh;
+}
+
+body {
+  background: var(--page-bg-color);
+  max-width: 100vw;
+  overflow-x: hidden;
+  --footer-height: 30px;
+}
+
+.container {
+  padding: 0.5rem;
+  width: 100vw;
+  height: calc(var(--app-height) - var(--footer-height));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  width: 100vw;
+  height: var(--footer-height);
+  padding: 8px 0;
+  position: fixed;
+  bottom: 0;
+  background: #c7c7c7;
+  display: flex;
+  justify-content: center;
+}
+
+/* Animaciones para Doraemon */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-15px);
+  }
+  60% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: scale(0.7) translateY(0px);
+  }
+  50% {
+    transform: scale(0.7) translateY(-8px);
+  }
+}
+
+@keyframes surprised {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px) scale(1.02);
+  }
+  75% {
+    transform: translateX(2px) scale(1.01);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes sleepy {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-1deg);
+  }
+  75% {
+    transform: rotate(1deg);
+  }
+}
+
+/* Clases para diferentes expresiones */
+.doraemon {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  transform-origin: center bottom; /* Punto de origen para las rotaciones */
+}
+
+.doraemon:hover {
+  transform: scale(1.01);
+}
+
+.doraemon.excited {
+  animation: bounce 0.6s ease;
+}
+
+.doraemon.happy {
+  animation: float 2s ease-in-out infinite;
+}
+
+.doraemon.surprised {
+  animation: surprised 0.4s ease;
+}
+
+.doraemon.sleepy {
+  opacity: 0.9;
+  filter: brightness(0.95);
+  animation: sleepy 3s ease-in-out infinite;
+}
+
+/* Mejorar transiciones de ojos solamente */
+.eyeball {
+  transition: transform 0.3s ease;
+}
+
+/* Mantener estabilidad del resto de elementos */
+.mouth, .nose, .mustache {
+  transition: none; /* Evitar deformaciones */
+}
+
+/* Estilo para el contenedor de frases */
+.doraemon-phrase {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.doraemon-phrase::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: linear-gradient(45deg, #298abf, #52a5c3);
+  border-radius: 25px;
+  z-index: -1;
+  opacity: 0.1;
+}
+
+/* Botón para iniciar el juego */
+.game-launcher {
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  z-index: 999;
+}
+
+.start-game-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.start-game-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.start-game-btn:active {
+  transform: translateY(-1px);
+}
+
+/* Estilos del Juego Tamagotchi - Diseño Compacto con Colores Mejorados */
+.tamagotchi-game {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  z-index: 1000;
+  overflow: hidden;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Layout Principal - 3 Columnas */
+.game-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr 250px;
+  grid-template-rows: 1fr;
+  height: 100%;
+  gap: 15px;
+}
+
+/* Panel Izquierdo - Stats y Controles */
+.left-panel {
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.game-header-compact {
+  text-align: center;
+  position: relative;
+}
+
+.close-game-btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.close-game-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2) 0%, rgba(255, 143, 107, 0.2) 100%);
+  transform: scale(1.1);
+}
+
+.game-header-compact h3 {
+  color: #4c63d2;
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+  text-shadow: 0 2px 4px rgba(76, 99, 210, 0.2);
+}
+
+.level-info-compact {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #6c5ce7;
+}
+
+/* Stats Compactos */
+.stats-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-icon {
+  font-size: 1.2rem;
+  min-width: 25px;
+}
+
+.stat-progress {
+  flex: 1;
+  height: 12px;
+  background: linear-gradient(90deg, #f1f2f6 0%, #e9ecef 100%);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(108, 92, 231, 0.2);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.progress-mini {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.5s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.progress-mini.hunger { 
+  background: linear-gradient(90deg, #ff6b8a 0%, #ff8a6b 50%, #ffa726 100%);
+}
+.progress-mini.sleep { 
+  background: linear-gradient(90deg, #4ecdc4 0%, #44a08d 50%, #2ed573 100%);
+}
+.progress-mini.happiness { 
+  background: linear-gradient(90deg, #ffeaa7 0%, #fdcb6e 50%, #e17055 100%);
+}
+.progress-mini.health { 
+  background: linear-gradient(90deg, #fd79a8 0%, #e84393 50%, #a29bfe 100%);
+}
+
+.stat-num {
+  font-size: 0.8rem;
+  font-weight: bold;
+  min-width: 35px;
+  text-align: right;
+  color: #4c63d2;
+}
+
+/* Botones de Acción Compactos */
+.action-buttons-compact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.action-btn-mini {
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+  border: 2px solid rgba(108, 92, 231, 0.2);
+  padding: 12px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  box-shadow: 0 4px 15px rgba(108, 92, 231, 0.1);
+}
+
+.action-btn-mini:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(108, 92, 231, 0.2);
+  border-color: rgba(108, 92, 231, 0.4);
+}
+
+.btn-icon-mini {
+  font-size: 1.2rem;
+}
+
+.btn-text-mini {
+  font-weight: bold;
+  color: #4c63d2;
+}
+
+.feed-btn:hover { 
+  background: linear-gradient(135deg, #ff8a8a 0%, #ffab91 100%); 
+  border-color: #ff8a8a; 
+}
+.feed-btn:hover .btn-text-mini { color: white; }
+
+.sleep-btn:hover { 
+  background: linear-gradient(135deg, #81c784 0%, #a5d6a7 100%); 
+  border-color: #81c784;
+}
+.sleep-btn:hover .btn-text-mini { color: white; }
+
+.play-btn:hover { 
+  background: linear-gradient(135deg, #90caf9 0%, #bbdefb 100%); 
+  border-color: #90caf9;
+}
+.play-btn:hover .btn-text-mini { color: white; }
+
+.medicine-btn:hover { 
+  background: linear-gradient(135deg, #f8bbd9 0%, #f48fb1 100%); 
+  border-color: #f8bbd9;
+}
+.medicine-btn:hover .btn-text-mini { color: white; }
+
+/* Panel Central - Doraemon */
+.center-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 255, 0.8) 100%);
+  border-radius: 25px;
+  padding: 20px;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.game-doraemon-container-compact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.game-doraemon {
+  transform: scale(0.7);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.game-doraemon:hover {
+  transform: scale(0.72);
+}
+
+/* Globo de diálogo compacto */
+.game-speech-bubble-compact {
+  position: relative;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+  border: 2px solid #6c5ce7;
+  border-radius: 18px;
+  padding: 12px 16px;
+  margin-bottom: 15px;
+  max-width: 250px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(108, 92, 231, 0.2);
+  opacity: 0.95;
+  transition: all 0.3s ease;
+}
+
+.game-speech-bubble-compact::before {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 12px solid #6c5ce7;
+}
+
+.game-speech-bubble-compact::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #ffffff;
+}
+
+.speech-text-compact {
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: #4c63d2;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px rgba(76, 99, 210, 0.1);
+}
+
+/* Panel Derecho - Logros y Estado */
+.right-panel {
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.achievements-compact h4 {
+  color: #4c63d2;
+  margin: 0 0 10px 0;
+  text-align: center;
+  font-size: 1rem;
+  text-shadow: 0 2px 4px rgba(76, 99, 210, 0.2);
+}
+
+.achievements-mini {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.achievement-mini {
+  background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid rgba(108, 92, 231, 0.2);
+  border-radius: 10px;
+  padding: 8px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(108, 92, 231, 0.1);
+}
+
+.achievement-mini.unlocked {
+  background: linear-gradient(145deg, #ffd700 0%, #ffed4e 60%, #ffc107 100%);
+  border-color: #ffc107;
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+}
+
+.achievement-mini.locked {
+  opacity: 0.6;
+  filter: grayscale(70%);
+}
+
+.achievement-icon-mini {
+  font-size: 1.2rem;
+  margin-bottom: 3px;
+}
+
+.achievement-name-mini {
+  font-weight: bold;
+  font-size: 0.7rem;
+  color: #4c63d2;
+  line-height: 1.1;
+}
+
+/* Estado del Juego */
+.game-status-compact {
+  margin-top: auto;
+}
+
+.game-time-compact {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  color: #6c5ce7;
+  font-weight: 500;
+}
+
+.time-icon {
+  font-size: 1rem;
+}
+
+.mood-indicator {
+  background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid rgba(108, 92, 231, 0.2);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(108, 92, 231, 0.1);
+}
+
+.mood-label {
+  font-size: 0.8rem;
+  color: #6c5ce7;
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.mood-emoji {
+  font-size: 1.5rem;
+  margin-right: 5px;
+}
+
+.mood-text {
+  font-weight: bold;
+  color: #4c63d2;
+  font-size: 0.9rem;
+}
+
+/* Animaciones específicas del juego compacto */
+@keyframes hungryBob {
+  0%, 100% { transform: scale(0.7) translateY(0); }
+  50% { transform: scale(0.7) translateY(-3px); }
+}
+
+@keyframes sickSway {
+  0%, 100% { transform: scale(0.7) rotate(0deg); }
+  25% { transform: scale(0.7) rotate(-1deg); }
+  75% { transform: scale(0.7) rotate(1deg); }
+}
+
+@keyframes sadDroop {
+  0%, 100% { transform: scale(0.7) translateY(0); }
+  50% { transform: scale(0.7) translateY(2px); }
+}
+
+/* Nuevas animaciones para movimientos aleatorios */
+@keyframes wiggle {
+  0%, 100% { transform: scale(0.7) rotate(0deg); }
+  25% { transform: scale(0.7) rotate(-3deg); }
+  50% { transform: scale(0.7) rotate(3deg); }
+  75% { transform: scale(0.7) rotate(-2deg); }
+}
+
+@keyframes tiltLeft {
+  0%, 100% { transform: scale(0.7) rotate(0deg); }
+  50% { transform: scale(0.7) rotate(-5deg); }
+}
+
+@keyframes tiltRight {
+  0%, 100% { transform: scale(0.7) rotate(0deg); }
+  50% { transform: scale(0.7) rotate(5deg); }
+}
+
+/* ===== ANIMACIONES DE EXTREMIDADES POR EMOCIONES ===== */
+
+/* Animaciones de brazos para diferentes emociones - CORREGIDAS para evitar deformaciones */
+@keyframes armsHappy {
+  0%, 100% { transform: rotateZ(45deg) translate(10px, -26px); }
+  25% { transform: rotateZ(35deg) translate(12px, -24px); }
+  75% { transform: rotateZ(55deg) translate(8px, -28px); }
+}
+
+@keyframes armsHappyRight {
+  0%, 100% { transform: rotateZ(51deg); }
+  25% { transform: rotateZ(41deg) translate(2px, -2px); }
+  75% { transform: rotateZ(61deg) translate(-2px, 2px); }
+}
+
+@keyframes armsSad {
+  0%, 100% { transform: rotateZ(45deg) translate(10px, -26px); }
+  50% { transform: rotateZ(55deg) translate(8px, -22px); }
+}
+
+@keyframes armsSadRight {
+  0%, 100% { transform: rotateZ(51deg); }
+  50% { transform: rotateZ(61deg) translate(-2px, 2px); }
+}
+
+@keyframes armsExcited {
+  0%, 100% { transform: rotateZ(45deg) translate(10px, -26px); }
+  50% { transform: rotateZ(25deg) translate(15px, -20px); }
+}
+
+@keyframes armsExcitedRight {
+  0%, 100% { transform: rotateZ(51deg); }
+  50% { transform: rotateZ(31deg) translate(5px, -5px); }
+}
+
+@keyframes armsSick {
+  0%, 100% { transform: rotateZ(45deg) translate(10px, -26px); }
+  50% { transform: rotateZ(50deg) translate(8px, -24px); }
+}
+
+@keyframes armsSickRight {
+  0%, 100% { transform: rotateZ(51deg); }
+  50% { transform: rotateZ(56deg) translate(-1px, 1px); }
+}
+
+@keyframes armsSleepy {
+  0%, 100% { transform: rotateZ(45deg) translate(10px, -26px); }
+  50% { transform: rotateZ(55deg) translate(7px, -24px); }
+}
+
+@keyframes armsSleepyRight {
+  0%, 100% { transform: rotateZ(51deg); }
+  50% { transform: rotateZ(61deg) translate(-1px, 1px); }
+}
+
+/* Animaciones de piernas para diferentes emociones - CORREGIDAS */
+@keyframes legsHappy {
+  0%, 100% { transform: translate(5px, 0px); }
+  25% { transform: translate(7px, -2px); }
+  75% { transform: translate(3px, -1px); }
+}
+
+@keyframes legsHappyRight {
+  0%, 100% { transform: translate(-5px, 0px); }
+  25% { transform: translate(-7px, -2px); }
+  75% { transform: translate(-3px, -1px); }
+}
+
+@keyframes legsSad {
+  0%, 100% { transform: translate(5px, 0px); }
+  50% { transform: translate(4px, 1px); }
+}
+
+@keyframes legsSadRight {
+  0%, 100% { transform: translate(-5px, 0px); }
+  50% { transform: translate(-4px, 1px); }
+}
+
+@keyframes legsExcited {
+  0%, 100% { transform: translate(5px, 0px); }
+  50% { transform: translate(5px, -3px); }
+}
+
+@keyframes legsExcitedRight {
+  0%, 100% { transform: translate(-5px, 0px); }
+  50% { transform: translate(-5px, -3px); }
+}
+
+@keyframes legsSick {
+  0%, 100% { transform: translate(5px, 0px); }
+  50% { transform: translate(4px, 1px); }
+}
+
+@keyframes legsSickRight {
+  0%, 100% { transform: translate(-5px, 0px); }
+  50% { transform: translate(-4px, 1px); }
+}
+
+@keyframes legsSleepy {
+  0%, 100% { transform: translate(5px, 0px); }
+  50% { transform: translate(4px, 1px); }
+}
+
+@keyframes legsSleepyRight {
+  0%, 100% { transform: translate(-5px, 0px); }
+  50% { transform: translate(-4px, 1px); }
+}
+
+/* ===== EXPRESIONES FACIALES DRAMÁTICAS - CORREGIDAS ===== */
+
+/* Animaciones más expresivas para los ojos - SIN DEFORMACIONES */
+@keyframes eyesHappy {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05) scaleY(0.8); }
+}
+
+@keyframes eyesSad {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.95) translateY(1px); }
+}
+
+@keyframes eyesExcited {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1) translateY(-1px); }
+}
+
+@keyframes eyesSick {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.9) scaleY(0.8); }
+}
+
+@keyframes eyesSleepy {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1) scaleY(0.5); }
+}
+
+/* Animaciones para la boca - SUTILES */
+@keyframes mouthHappy {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05) translateY(-1px); }
+}
+
+@keyframes mouthSad {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.95) translateY(1px); }
+}
+
+@keyframes mouthExcited {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.1) translateY(-1px); }
+  75% { transform: scale(1.05); }
+}
+
+@keyframes mouthSick {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.9) translateY(1px); }
+}
+
+@keyframes mouthSleepy {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+}
+
+/* Animaciones para la nariz - MUY SUTILES */
+@keyframes noseHappy {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes noseSad {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.98); }
+}
+
+@keyframes noseExcited {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05) translateY(-0.5px); }
+}
+
+@keyframes noseSick {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+}
+
+@keyframes noseSleepy {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.98); }
+}
+
+/* ===== ESTADOS EMOCIONALES CORPORALES COMPLETOS ===== */
+/* SOLO PARA DORAEMON ORIGINAL - NO PARA GAME-DORAEMON */
+
+/* FELIZ - Cuerpo completo animado */
+.doraemon.emotion-happy:not(.game-doraemon) .left-hand {
+  animation: armsHappy 1.5s ease-in-out infinite;
+}
+
+.doraemon.emotion-happy:not(.game-doraemon) .right-hand {
+  animation: armsHappyRight 1.5s ease-in-out infinite;
+}
+
+.doraemon.emotion-happy:not(.game-doraemon) .left-leg {
+  animation: legsHappy 1.5s ease-in-out infinite;
+}
+
+.doraemon.emotion-happy:not(.game-doraemon) .right-leg {
+  animation: legsHappyRight 1.5s ease-in-out infinite;
+}
+
+.doraemon.emotion-happy:not(.game-doraemon) .eye {
+  animation: eyesHappy 1.5s ease-in-out infinite;
+}
+
+.doraemon.emotion-happy:not(.game-doraemon) .mouth {
+  animation: mouthHappy 1.5s ease-in-out infinite;
+}
+
+.doraemon.emotion-happy:not(.game-doraemon) .nose {
+  animation: noseHappy 1.5s ease-in-out infinite;
+}
+
+/* TRISTE - Cuerpo completo abatido */
+.doraemon.emotion-sad:not(.game-doraemon) .left-hand {
+  animation: armsSad 2s ease-in-out infinite;
+}
+
+.doraemon.emotion-sad:not(.game-doraemon) .right-hand {
+  animation: armsSadRight 2s ease-in-out infinite;
+}
+
+.doraemon.emotion-sad:not(.game-doraemon) .left-leg {
+  animation: legsSad 2s ease-in-out infinite;
+}
+
+.doraemon.emotion-sad:not(.game-doraemon) .right-leg {
+  animation: legsSadRight 2s ease-in-out infinite;
+}
+
+.doraemon.emotion-sad:not(.game-doraemon) .eye {
+  animation: eyesSad 2s ease-in-out infinite;
+}
+
+.doraemon.emotion-sad:not(.game-doraemon) .mouth {
+  animation: mouthSad 2s ease-in-out infinite;
+}
+
+.doraemon.emotion-sad:not(.game-doraemon) .nose {
+  animation: noseSad 2s ease-in-out infinite;
+}
+
+/* EMOCIONADO - Cuerpo completo energético */
+.doraemon.emotion-excited:not(.game-doraemon) .left-hand {
+  animation: armsExcited 0.8s ease-in-out infinite;
+}
+
+.doraemon.emotion-excited:not(.game-doraemon) .right-hand {
+  animation: armsExcitedRight 0.8s ease-in-out infinite;
+}
+
+.doraemon.emotion-excited:not(.game-doraemon) .left-leg {
+  animation: legsExcited 0.8s ease-in-out infinite;
+}
+
+.doraemon.emotion-excited:not(.game-doraemon) .right-leg {
+  animation: legsExcitedRight 0.8s ease-in-out infinite;
+}
+
+.doraemon.emotion-excited:not(.game-doraemon) .eye {
+  animation: eyesExcited 0.8s ease-in-out infinite;
+}
+
+.doraemon.emotion-excited:not(.game-doraemon) .mouth {
+  animation: mouthExcited 0.8s ease-in-out infinite;
+}
+
+.doraemon.emotion-excited:not(.game-doraemon) .nose {
+  animation: noseExcited 0.8s ease-in-out infinite;
+}
+
+/* ENFERMO - Cuerpo completo débil */
+.doraemon.emotion-sick:not(.game-doraemon) .left-hand {
+  animation: armsSick 3s ease-in-out infinite;
+}
+
+.doraemon.emotion-sick:not(.game-doraemon) .right-hand {
+  animation: armsSickRight 3s ease-in-out infinite;
+}
+
+.doraemon.emotion-sick:not(.game-doraemon) .left-leg {
+  animation: legsSick 3s ease-in-out infinite;
+}
+
+.doraemon.emotion-sick:not(.game-doraemon) .right-leg {
+  animation: legsSickRight 3s ease-in-out infinite;
+}
+
+.doraemon.emotion-sick:not(.game-doraemon) .eye {
+  animation: eyesSick 3s ease-in-out infinite;
+}
+
+.doraemon.emotion-sick:not(.game-doraemon) .mouth {
+  animation: mouthSick 3s ease-in-out infinite;
+}
+
+.doraemon.emotion-sick:not(.game-doraemon) .nose {
+  animation: noseSick 3s ease-in-out infinite;
+}
+
+/* SOMNOLIENTO - Cuerpo completo cansado */
+.doraemon.emotion-sleepy:not(.game-doraemon) .left-hand {
+  animation: armsSleepy 3s ease-in-out infinite;
+}
+
+.doraemon.emotion-sleepy:not(.game-doraemon) .right-hand {
+  animation: armsSleepyRight 3s ease-in-out infinite;
+}
+
+.doraemon.emotion-sleepy:not(.game-doraemon) .left-leg {
+  animation: legsSleepy 3s ease-in-out infinite;
+}
+
+.doraemon.emotion-sleepy:not(.game-doraemon) .right-leg {
+  animation: legsSleepyRight 3s ease-in-out infinite;
+}
+
+.doraemon.emotion-sleepy:not(.game-doraemon) .eye {
+  animation: eyesSleepy 3s ease-in-out infinite;
+}
+
+.doraemon.emotion-sleepy:not(.game-doraemon) .mouth {
+  animation: mouthSleepy 3s ease-in-out infinite;
+}
+
+.doraemon.emotion-sleepy:not(.game-doraemon) .nose {
+  animation: noseSleepy 3s ease-in-out infinite;
+}
+
+/* ===== ANIMACIONES ESPECÍFICAS PARA GAME-DORAEMON ===== */
+/* Animaciones más sutiles que respetan la escala de 0.7 */
+
+/* Animaciones de emociones para el Doraemon del juego */
+.game-doraemon.emotion-happy {
+  animation: float 2s ease-in-out infinite;
+}
+
+.game-doraemon.emotion-happy .eye {
+  transform: scaleY(0.8);
+  transition: transform 0.3s ease;
+}
+
+.game-doraemon.emotion-sad {
+  animation: sadDroop 2s ease-in-out infinite;
+}
+
+.game-doraemon.emotion-sad .eye {
+  transform: scaleY(0.7) scaleX(0.9);
+  transition: transform 0.4s ease;
+}
+
+.game-doraemon.emotion-excited {
+  animation: bounce 1s ease-in-out infinite;
+}
+
+.game-doraemon.emotion-excited .eye {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+.game-doraemon.emotion-sick {
+  filter: brightness(0.8) saturate(0.7);
+  animation: sickSway 3s ease-in-out infinite;
+}
+
+.game-doraemon.emotion-sick .eye {
+  transform: scaleY(0.5) scaleX(0.9);
+  transition: transform 0.5s ease;
+}
+
+.game-doraemon.emotion-sleepy {
+  animation: sleepy 3s ease-in-out infinite;
+}
+
+.game-doraemon.emotion-sleepy .eye {
+  transform: scaleY(0.3);
+  transition: transform 0.5s ease;
+}
+
+.game-doraemon.emotion-normal {
+  animation: none;
+}
+
+.game-doraemon.emotion-normal .eye {
+  transform: scale(1);
+  transition: transform 0.3s ease;
+}
+
+/* Estados específicos del Doraemon del juego compacto */
+.game-doraemon.sick {
+  filter: brightness(0.8) saturate(0.7);
+  animation: sickSway 3s ease-in-out infinite !important;
+}
+
+.game-doraemon.hungry {
+  animation: hungryBob 1.5s ease-in-out infinite !important;
+}
+
+.game-doraemon.happy {
+  animation: float 2s ease-in-out infinite !important;
+  filter: brightness(1.1) saturate(1.1);
+}
+
+.game-doraemon.sleepy {
+  opacity: 0.9;
+  filter: brightness(0.95);
+  animation: sleepy 3s ease-in-out infinite !important;
+}
+
+.game-doraemon.sad {
+  filter: brightness(0.9) saturate(0.8);
+  animation: sadDroop 2s ease-in-out infinite !important;
+}
+
+.game-doraemon.excited {
+  animation: bounce 0.6s ease !important;
+  filter: brightness(1.1);
+}
+
+.game-doraemon.surprised {
+  animation: surprised 0.4s ease !important;
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: 20px;
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.header-controls {
+  position: relative;
+}
+
+.close-game-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.close-game-btn:hover {
+  background: rgba(255, 0, 0, 0.1);
+}
+
+.game-header h2 {
+  color: #298abf;
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+}
+
+.level-info {
+  display: flex;
+  justify-content: space-around;
+  font-weight: bold;
+  color: #555;
+}
+
+.stats-container {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.stat-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.stat-bar label {
+  font-weight: bold;
+  min-width: 80px;
+  font-size: 0.9rem;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 20px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #ddd;
+}
+
+.progress-fill {
+  height: 100%;
+  transition: width 0.5s ease;
+  border-radius: 8px;
+}
+
+.progress-fill.hunger { background: linear-gradient(90deg, #ff6b6b, #ff8e53); }
+.progress-fill.sleep { background: linear-gradient(90deg, #4ecdc4, #44a08d); }
+.progress-fill.happiness { background: linear-gradient(90deg, #feca57, #ff9ff3); }
+.progress-fill.health { background: linear-gradient(90deg, #ff6b95, #ff9068); }
+
+.stat-value {
+  font-weight: bold;
+  min-width: 45px;
+  text-align: right;
+  color: #555;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  background: white;
+  border: none;
+  padding: 20px;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+.btn-icon {
+  font-size: 2rem;
+}
+
+.btn-text {
+  font-weight: bold;
+  color: #555;
+}
+
+.feed-btn:hover { background: linear-gradient(135deg, #ff8a80, #ffab91); }
+.sleep-btn:hover { background: linear-gradient(135deg, #81c784, #a5d6a7); }
+.play-btn:hover { background: linear-gradient(135deg, #90caf9, #bbdefb); }
+.medicine-btn:hover { background: linear-gradient(135deg, #f8bbd9, #f48fb1); }
+
+.achievements-panel {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.achievements-panel h3 {
+  color: #298abf;
+  margin: 0 0 15px 0;
+  text-align: center;
+}
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.achievement-badge {
+  background: #f8f9fa;
+  border: 2px solid #dee2e6;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.achievement-badge.unlocked {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  border-color: #ffc107;
+  transform: scale(1.05);
+}
+
+.achievement-badge.locked {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+.achievement-icon {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.achievement-name {
+  font-weight: bold;
+  font-size: 0.8rem;
+  margin-bottom: 3px;
+  color: #555;
+}
+
+.achievement-desc {
+  font-size: 0.7rem;
+  color: #777;
+  line-height: 1.2;
+}
+
+.game-status {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.status-message {
+  background: #298abf;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-time {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Responsivo para tablets y móviles */
+@media (max-width: 1024px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 10px;
+  }
+  
+  .left-panel, .right-panel {
+    order: 2;
+  }
+  
+  .center-panel {
+    order: 1;
+  }
+  
+  .stats-compact {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .stat-item {
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  .action-buttons-compact {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .achievements-mini {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .tamagotchi-game {
+    padding: 5px;
+  }
+  
+  .game-layout {
+    gap: 8px;
+  }
+  
+  .left-panel, .right-panel {
+    padding: 10px;
+  }
+  
+  .game-doraemon {
+    transform: scale(0.5);
+  }
+  
+  .game-doraemon:hover {
+    transform: scale(0.52);
+  }
+  
+  .game-speech-bubble-compact {
+    max-width: 200px;
+    padding: 8px 12px;
+  }
+  
+  .speech-text-compact {
+    font-size: 0.8rem;
+  }
+  
+  .action-buttons-compact {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  
+  .action-btn-mini {
+    padding: 10px 6px;
+  }
+  
+  .btn-icon-mini {
+    font-size: 1rem;
+  }
+  
+  .btn-text-mini {
+    font-size: 0.7rem;
+  }
+  
+  .achievements-mini {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  
+  .achievement-mini {
+    padding: 6px;
+  }
+  
+  .achievement-icon-mini {
+    font-size: 1rem;
+  }
+  
+  .achievement-name-mini {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-compact {
+    flex-direction: column;
+  }
+  
+  .stat-item {
+    min-width: auto;
+  }
+  
+  .stat-progress {
+    height: 10px;
+  }
+  
+  .game-header-compact h3 {
+    font-size: 1rem;
+  }
+  
+  .level-info-compact {
+    font-size: 0.8rem;
+  }
+}
+
+/* Animación de pulso para mensajes */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.footer {
+  width: 100vw;
+  height: var(--footer-height);
+  padding: 8px 0;
+  position: fixed;
+  bottom: 0;
+  background: #c7c7c7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.footer a {
+  text-decoration: none;
+  color: #000;
+}
+.github {
+  text-decoration: none;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: block;
+  cursor: pointer;
+  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.github img {
+  max-width: 1.8rem;
+}
+
+.github span {
+  color: #000;
+  font-size: 0.8em;
+  line-height: 1;
+  display: block;
+  margin-top: 5px;
+  /* margin-left: -2rem; */
+}
+
+.doraemon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  --head-height: 300px;
+  --head-width: calc(var(--head-height) * 1.183);
+
+  --belt-width: calc(var(--head-width) * 0.6625); /*0.6625x of width */
+  --belt-height: 25px;
+}
+
+.head {
+  height: var(--head-height);
+  width: var(--head-width);
+  border: 1px solid var(--black);
+  background: var(--body-color);
+  /* border-radius: 55% 55% 37% 35% / 53% 53% 66% 66%; */
+  border-radius: 60% 60% 40% 40% / 60% 60% 70% 70%;
+  position: relative;
+  box-shadow: inset 0px 0px 11px 4px var(--body-shawdow-color);
+}
+
+.face {
+  height: 250px;
+  width: 300px;
+  background: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  border-radius: inherit;
+  transform: translateX(-50%);
+}
+
+.belt {
+  z-index: 2;
+  width: var(--belt-width);
+  height: var(--belt-height);
+  background: var(--belt-color);
+  background-image: radial-gradient(
+    circle at 100%,
+    var(--black) 0%,
+    var(--belt-color) 20%
+  );
+  position: relative;
+  top: -20px;
+  border: 1px solid var(--black);
+  border-radius: 20% 20% 20% 20% / 20% 20% 30% 30%;
+}
+
+.bell-ring {
+  height: 50px;
+  width: 49px;
+  background: rgba(225, 186, 111, 1);
+  border-radius: 55% 55% 50% 50%/55% 55% 50% 50%;
+  border: 1px solid var(--black);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: inset 0px 0px 9px 3px var(--black) 55538;
+  overflow: hidden;
+}
+
+.bell-ring-strip {
+  width: 125%;
+  height: 50%;
+  display: inline-block;
+  border: solid 1px var(--black);
+  border-color: var(--black) transparent transparent transparent;
+  border-radius: 100% 70% 0 0/ 90% 120% 0 0;
+  position: absolute;
+  top: 18%;
+  left: -12.5%;
+  transform: rotateZ(3deg);
+}
+.bell-ring-strip:nth-child(2) {
+  top: 30%;
+}
+
+.bell-ring::before {
+  content: "";
+  width: 10px;
+  height: 30px;
+  display: inline-block;
+  border-right: solid 1px var(--black);
+  transform: translate(-61%, 0%) rotateZ(6deg);
+  border-radius: 50%;
+  position: absolute;
+  top: calc(100% - 18px);
+  left: 45%;
+}
+
+.bell-ring::after {
+  content: "";
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  border: solid 1px var(--black);
+  background: #d0d0d0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+  border-radius: 50%/45% 50% 50% 50%;
+}
+
+.eyes {
+  position: relative;
+}
+.eye {
+  content: "";
+  position: absolute;
+  display: inline-block;
+  width: 65px;
+  height: 84px;
+  border: 1px solid var(--black);
+  /* border-radius: 50% /40%; */
+  /* border-radius: 81% 78% 65% 80% / 66% 68% 56% 61%; */
+  border-radius: 100% 80% 86% 89% / 100% 83% 80% 100%;
+  background: #fff;
+  top: -36px;
+}
+
+.eye-left {
+  left: 50%;
+  transform: translateX(-100%);
+}
+.eye-right {
+  right: 50%;
+  transform: translateX(100%) scaleX(-1);
+}
+
+.eyeball {
+  height: 20px;
+  width: 15px;
+  border-radius: 50%;
+  background: #000;
+  position: absolute;
+  top: 50%;
+}
+
+.eyeball::after {
+  content: "";
+  height: 40%;
+  width: 40%;
+  display: inline-block;
+  background: #fff;
+  position: absolute;
+  border-radius: 50%;
+  bottom: 10%;
+  left: 30%;
+}
+
+.eye-left .eyeball {
+  right: 10px;
+}
+
+.eye-right .eyeball {
+  right: 10px;
+}
+
+.nose {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: var(--belt-color);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 28px;
+  position: relative;
+}
+
+.nose::after {
+  content: "";
+  display: inline-block;
+  width: 50px;
+  height: 43px;
+  position: absolute;
+  background: transparent;
+  border-left: 2px solid var(--black);
+  top: 100%;
+  left: 50%;
+  /* transform: translate(calc(-50% + 25px), 0%); */
+}
+
+.nose::before {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%/50%;
+  left: 38%;
+  position: absolute;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  /* box-shadow: 0px 0 7px 2px #eeeeeea1, 7px 3px 3px 3px #55555559; */
+  box-shadow: 0px 0 7px 2px #eeeeeea1, 7px 3px 6px 6px #55555559;
+}
+
+.mustache {
+  position: absolute;
+  width: 85px;
+  height: 40px;
+  top: 59px;
+  left: 50%;
+  transform: translate(-50%);
+  z-index: 1;
+}
+
+.mustache-hair {
+  position: absolute;
+  width: 100px;
+  background: var(--black);
+  height: 2px;
+}
+
+.mustache-left-hair {
+  left: -100px;
+}
+
+.mustache-left-hair:nth-child(1) {
+  top: 0;
+  transform: rotate(15deg);
+  transform-origin: 100%;
+}
+
+.mustache-left-hair:nth-child(2) {
+  top: 50%;
+  transform: translate(-3px, -40%) rotate(2deg);
+  transform-origin: 100%;
+}
+.mustache-left-hair:nth-child(3) {
+  transform: rotate(-10deg) translate(1px, 2px);
+  bottom: 0%;
+  transform-origin: 100%;
+}
+
+.mustache-right-hair {
+  right: -100px;
+}
+
+.mustache-right-hair:nth-child(4) {
+  top: 0;
+  transform: rotate(-15deg);
+  transform-origin: 0%;
+}
+
+.mustache-right-hair:nth-child(5) {
+  top: 50%;
+  transform: translate(8px, -40%) rotate(-2deg);
+  transform-origin: 0%;
+}
+.mustache-right-hair:nth-child(6) {
+  transform: rotate(10deg);
+  bottom: 0%;
+  transform-origin: 0%;
+}
+
+.mouth {
+  --mouth-height: 110px;
+  --mouth-top-height: 25px;
+  --mouth-bottom-height: calc(var(--mouth-height) - var(--mouth-top-height));
+  position: absolute;
+  bottom: 0;
+  width: calc(var(--mouth-height) * 2.2);
+  height: 115px;
+  left: 50%;
+  transform: translate(-50%);
+  top: 100px;
+  z-index: 0;
+}
+
+.mouth-top {
+  width: calc(10% - 34px);
+  left: 51%;
+  transform: translate(calc(-50% - 1px));
+  background: #fff;
+  position: absolute;
+  height: var(--mouth-top-height);
+  display: inline-block;
+  top: 5px;
+  overflow: hidden;
+}
+
+.mouth-top-right-round {
+  display: inline-block;
+  background: var(--mouth-bg-color);
+  width: 100%;
+  height: var(--mouth-top-height);
+  border-radius: 60% 97% 10px 0% / 159% 136% 10px 0%;
+  transform: translate(-1px, 0px);
+}
+
+.mouth-bottom {
+  overflow: hidden;
+  width: inherit;
+  height: var(--mouth-bottom-height);
+  border-radius: 5px 5px 100% 100% / 5px 5px 200% 200%;
+  position: absolute;
+  bottom: 0;
+}
+
+.mouth-bottom-ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--mouth-bg-color);
+  height: 174px;
+  overflow: hidden;
+  border-radius: inherit;
+  z-index: 0;
+  transform: translateY(calc(var(--mouth-bottom-height) - 100%));
+  /* border: 1px solid var(--black); */
+  border-top: none;
+  display: inline-block;
+}
+
+.mouth-top-right-round-fixer {
+  content: "";
+  background: #ffffff;
+  position: absolute;
+  top: 0;
+  width: 117px;
+  z-index: 100;
+  height: 24px;
+  border-radius: 45%;
+  transform: rotateZ(-9deg) translate(-19px, -11px);
+}
+
+.mouth-top-right-round-fixer::after {
+  content: "";
+  background: var(--mouth-bg-color);
+  position: absolute;
+  width: 22px;
+  height: 50px;
+  border-radius: 72% 0% 0 1% / 90% 0 0% 1%;
+  z-index: 1111;
+  top: 7%;
+  left: 78%;
+  transform: rotateZ(70deg);
+}
+
+.mouth-top-right-round-fixer::before {
+  /* content: ""; */
+  background: #fff;
+  position: absolute;
+  width: 121px;
+  height: 24px;
+  background: var(--mouth-bg-color);
+  border-radius: 72% 0% 0 1% / 90% 0 0% 1%;
+}
+
+.tongue-container {
+  z-index: 1;
+  position: absolute;
+  top: 84%;
+  left: 50%;
+  transform: translate(-50%, 10%) rotate(45deg) scale(1.5);
+  /* overflow: hidden; */
+}
+
+.tongue {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  background: rgba(211, 99, 95, 1);
+}
+.tongue::before,
+.tongue::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 100%;
+  background: inherit;
+}
+
+.tongue::before {
+  left: -60%;
+  box-shadow: inset 6px -2px 4px 0px #00000038;
+}
+
+.tongue::after {
+  top: -60%;
+  box-shadow: inset -6px 6px 4px 0px #00000038;
+}
+
+.body-part {
+  --body-part-width: calc(var(--belt-width) * 1);
+  --body-part-height: calc(var(--body-part-width) * 0.705 + 10px);
+  --shoe-height: 20px;
+
+  position: relative;
+  top: -20px;
+  height: var(--body-part-height);
+  width: var(--body-part-width);
+}
+
+.left-body-part,
+.right-body-part {
+  position: absolute;
+  width: calc(var(--body-part-width) / 2 - 15px);
+  height: calc(var(--body-part-height) - var(--shoe-height));
+  top: -10px;
+  background: var(--body-color);
+  border: 1px solid var(--black);
+  z-index: 1;
+  /* border-radius: 10px; */
+}
+
+.left-body-part {
+  left: 0;
+  border-right: none;
+  border-top-left-radius: 18% 20%;
+  border-bottom-left-radius: 14% 60%;
+  box-shadow: inset -7px -12px 11px 4px var(--body-shawdow-color),
+    inset 4px -1px 13px 5px var(--body-shawdow-color-light);
+}
+
+.right-body-part {
+  right: 0;
+  border-top-right-radius: 18% 20%;
+  border-bottom-right-radius: 14% 50%;
+  box-shadow: inset 12px -3px 9px 5px var(--body-shawdow-color);
+  border-left: none;
+}
+
+.left-body-part::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 19px;
+  background: var(--body-color);
+  border-radius: 100px;
+  box-shadow: inset 4px -1px 13px 5px var(--body-shawdow-color-light);
+  transform: rotate(21deg) translate(3px, 9px);
+}
+
+/* 104x74 */
+
+/* 84x63 */
+.dress {
+  position: absolute;
+
+  width: calc(var(--body-part-width) * 0.808);
+  height: calc(var(--body-part-height) * 0.852);
+  z-index: 1;
+  background: #fff;
+  top: -25px;
+  left: 50%;
+  transform: translate(-50%);
+  border: 1px solid var(--black);
+  border-radius: 66% 66% 100% 100% / 100% 100% 90% 90%;
+}
+
+.pocket {
+  --pocket-width: 70%;
+  position: absolute;
+  top: 45%;
+  bottom: 0;
+  width: var(--pocket-width);
+  height: calc(var(--pocket-width) / 1.8);
+  border: 1px solid var(--black);
+  left: 52%;
+  transform: translate(-50%) rotate(0deg);
+  border-radius: 0% 0% 100% 100% / 0% 0% 200% 200%;
+}
+
+.leg-gap {
+  content: "";
+  position: absolute;
+  top: 105px;
+  left: 50%;
+  width: 40px;
+  height: 41px;
+  transform: translate(-50%);
+  background: var(--body-color);
+  box-shadow: inset -18px 8px 11px 4px var(--body-shawdow-color),
+    inset 18px 8px 11px 4px var(--body-shawdow-color);
+  overflow: hidden;
+}
+.leg-gap::after {
+  content: "";
+  position: absolute;
+  top: 21px;
+  background: var(--page-bg-color);
+  width: 40px;
+  height: 200px;
+  border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+  border: 1px solid var(--black);
+}
+
+.leg {
+  position: absolute;
+  top: 98%;
+  z-index: 1;
+  height: calc(var(--shoe-height) + 10px);
+  width: 105%;
+  left: 0%;
+  background: #fff;
+  border-radius: 10% 10% 100% 100% / 60% 60% 100% 100%;
+  border: 1px solid var(--black);
+}
+
+.leg.left-leg {
+  left: 5%;
+  border-radius: 10% 10% 129% 75%/ 60% 60% 86% 100%;
+  box-shadow: inset 6px -1px 5px 1px #5555553d;
+}
+
+.leg.right-leg {
+  transform: translate(-5px, 0px);
+  left: -5%;
+  border-radius: 10% 10% 75% 129% / 60% 60% 100% 86%;
+  box-shadow: inset -2px -4px 5px 1px #5555553d;
+}
+
+.left-hand {
+  position: absolute;
+  left: -25%;
+  width: 50px;
+  height: 118px;
+  background: var(--body-color);
+  transform: rotateZ(45deg) translate(10px, -26px);
+  border-radius: 10% 10% 83% 80% / 10% 10% 95% 95%;
+  border: 1px solid var(--black);
+  box-shadow: inset -11px -13px 8px 3px #5555555c;
+}
+
+.left-hand::after {
+  content: "";
+  position: absolute;
+  top: calc(100% - 35px);
+  left: -2px;
+  width: 50px;
+  height: 50px;
+  background: #fff;
+  border-radius: 50%;
+  border: 1px solid var(--black);
+}
+
+.right-hand {
+  position: absolute;
+  right: 3%;
+  width: 50px;
+  height: 118px;
+  background: var(--body-color);
+  transform: rotateZ(51deg);
+  border-radius: 83% 80% 10% 10%/ 95% 95% 10% 10%;
+  border: 1px solid var(--black);
+  transform-origin: 50% 100%;
+  top: -44%;
+  box-shadow: inset -7px -8px 8px 2px #5555555c;
+}
+
+.right-hand::after {
+  content: "";
+  position: absolute;
+  top: calc(-20px);
+  right: -2px;
+  width: 50px;
+  height: 50px;
+  background: #fff;
+  border-radius: 50%;
+  border: 1px solid var(--black);
+}
